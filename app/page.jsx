@@ -14,7 +14,7 @@ export default function Home() {
         </nav>
         <section className="w-full h-4/5 ">
           <div className="w-full h-[70%] mt-2 opacity-40   bg-[url('/weatherapp/others/Cloud-background.png')] "></div>
-          <img className="absolute flex top-1/4 left-36" src="./weatherapp/weather/04d.png" alt="" />
+          <Image className="absolute flex top-1/4 left-36 h-48 w-52" src="/weatherapp/weather/04d.png" alt="" width={1080} height={1920}/>
         </section>
       </aside>
       <div className="w-[65%] h-full bg-slate-950 flex flex-col items-center">
@@ -27,7 +27,7 @@ export default function Home() {
         <div className="w-[70%] h-1/5  text-white flex justify-center gap-x-4 mt-4">
           <article className="flex flex-col items-center w-32 h-36 bg-[#1e213a] text-white">
             <h2 className="text-lg">Tomorrow</h2>
-            <img className="h-12 w-20 pe-4" src="./weatherapp/weather/04d.png" alt="" />
+            <Image className="h-12 w-20 pe-4" src="/weatherapp/weather/04d.png" alt="" width={1080} height={1920}/>
             <h2 className="text-lg text-white mt-8">30°C <span className="opacity-50">18°C </span></h2>
           </article>
           <article className="flex flex-col items-center w-32 h-36 bg-[#1e213a] text-white">
@@ -45,7 +45,7 @@ export default function Home() {
 
         </div>
         <section className="w-[70%] h-4/5  grid grid-rows-10 grid-cols-12 gap-3  ">
-          <h2 className="text-2xl text-white mt-4 w-full h-12 grid-rows-10 gridTemplate">Today's Hightlights</h2>
+          <h2 className="text-2xl text-white mt-4 w-full h-12 grid-rows-10 gridTemplate">Today&apos;s Hightlights</h2>
           <article className=" bg-[#1e213a] topSquareLeft"></article>
           <article className=" bg-[#1e213a] topSquareRight"></article>
           <article className=" bg-[#1e213a] bottomSquareLeft"></article>
