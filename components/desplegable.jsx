@@ -11,9 +11,9 @@ export default function Desplegable({ setDropDown, setValue, code, setCode }) {
 
   const filter = (e) => {
     if (e.target.tagName === "LI") {
-      setValue(results[e.target.value]?.result1?.city)
+      setValue(results[e.target.value]?.result1?.city || results[e.target.value]?.result2?.city || results[e.target.value]?.result3?.city ? results[e.target.value]?.result1?.city || results[e.target.value]?.result2?.city || results[e.target.value]?.result3?.city : "")
       console.log(e.target.value)
-      setCode(results[e.target.value]?.result1?.country_code)
+      setCode(results[e.target.value]?.result1?.country_code || results[e.target.value]?.result2?.country_code || results[e.target.value]?.result3?.country_code ? results[e.target.value]?.result1?.country_code || results[e.target.value]?.result2?.country_code || results[e.target.value]?.result3?.country_code : "")
       setDropDown(false)
     }
   }
@@ -30,7 +30,7 @@ export default function Desplegable({ setDropDown, setValue, code, setCode }) {
       setResults([{
         result1: { city: (places[0].name), country_code: (places[0].country_code) },
         result2: { city: (places[1].name), country_code: (places[1].country_code) },
-        result2: { city: (places[1].name), country_code: (places[1].country_code) }
+        result3: { city: (places[2].name), country_code: (places[2].country_code) }
       }])
       : setResults([{
         result1: { city: (places[0].name), country_code: (places[0].country_code) },
@@ -57,21 +57,17 @@ export default function Desplegable({ setDropDown, setValue, code, setCode }) {
       </section>
 
       <ul className='w-full flex flex-col items-center mt-4 text-white font-medium gap-y-6 ' onClick={filter}>
-        {results[0]?.result1  && results[0]?.result2  && results[0]?.result3  ?
+        {results[0]?.result1?.city ?
 
           <>
             <li value={0} className='cursor-pointer'>{(results[0]?.result1?.city) + "," + (results[0]?.result1?.country_code)}</li>
-            <li value={1} className='cursor-pointer'>{(results[0]?.result2?.city) + "," + (results[0]?.result2?.country_code)}</li>
-            <li value={2} className='cursor-pointer'>{(results[0]?.result3?.city) + "," + (results[0]?.result3?.country_code)}</li>
+            <li value={1} className='cursor-pointer'>{(results[0]?.result2?.city ? results[0]?.result2?.city : "") + (results[0]?.result2?.city? "," : "") + (results[0]?.result2?.country_code ? results[0]?.result2?.country_code : "")}</li>
+            <li value={2} className='cursor-pointer'>{(results[0]?.result3?.city ? results[0]?.result3?.city : "") + (results[0]?.result3?.city ? "," : "") + (results[0]?.result3?.country_code? results[0]?.result3?.country_code : "")}</li>
           </>
          
-           :
-           results[0].result1 &&
-            <>
-              <li value={0} className='cursor-pointer'>{(results[0].result1.city) + "," + (results[0].result1.country_code)}</li>
-            </>
            
-          
+           
+          : <li className='text-bold'>No hay lugares compatibles con esa busqueda, busque de nuevo por favor</li>
         }
        
 

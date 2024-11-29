@@ -13,16 +13,16 @@ export default function Layout() {
   const [value, setValue] = useState("santiago")
   const [code, setCode] = useState("CL")
   const [weather1, setWeather1] = useState({})
-  
+  const[units,setUnits] = useState("metric")
   
 
-   const url1 = `https://api.openweathermap.org/data/2.5/weather?q=${value},${code}&appid=739b8fb7ebe6944b38727b4fd7f46c2e` 
+   const url1 = `https://api.openweathermap.org/data/2.5/weather?q=${value},${code}&appid=739b8fb7ebe6944b38727b4fd7f46c2e&units=${units}` 
   
 
   useEffect(() => {
     fetchDataWeather1(url1)
       .then((data) => setWeather1(data))
-  }, [value, code])
+  }, [value, code,units])
 
  
 
@@ -38,12 +38,15 @@ export default function Layout() {
         value={value}
         setCode={setCode}
         code={code}
-        
+        units={units}
+        setUnits = {setUnits}
       />
       <RightSectionLayout
         weather1={weather1}
         code={code}
         value={value}
+        units={units}
+        setUnits = {setUnits}
       />
       
 

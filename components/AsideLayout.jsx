@@ -4,12 +4,12 @@ import Image from 'next/image';
 import Desplegable from './desplegable';
 import fetchDataWeather1 from '@/utils/fetchDataWeather1';
 
-export default function AsideLayout({ weather1, setValue, value, code, setCode, geoLocation}) {
+export default function AsideLayout({ weather1, setValue, value, code, setCode, geoLocation,units,setUnits}) {
 
   const [dropDown, setDropDown] = useState(false)
   const [latitude, setLatitude] = useState("")
   const [longitude, setLongitude] = useState("")
-
+  
 
   const options = { year: "numeric", month: "short", weekday: "short", day: "numeric" }
 
@@ -29,11 +29,11 @@ export default function AsideLayout({ weather1, setValue, value, code, setCode, 
     }
   } 
 
-  useEffect(() => {
+  useEffect((e) => {
     getUbication()
     console.log(geoLocation)
-
-  }, [latitude, longitude])
+    
+  }, [latitude,longitude])
 
 
   function getLocation() {
@@ -71,7 +71,7 @@ export default function AsideLayout({ weather1, setValue, value, code, setCode, 
 
         <nav className="w-[80%] flex mt-5 items-center justify-between">
           <button className="w-48 h-9 text-white bg-gray-500 active:ease-out active:duration-150 active:bg-green-300 active:w-44 active:h-7 hover:ease-out hover:duration-1000 hover:bg-gray-600" onClick={() => setDropDown(true)}>Search for places</button>
-          <ul onClick={getLocation} className="w-10 h-10 bg-gray-700 flex justify-center items-center   rounded-full cursor-pointer hover:ease-out hover:duration-1000 hover:bg-gray-500  active:ease-out active:duration-500 active:bg-green-300 active:w-9 active:h-9">
+          <ul value="location" onClick={getLocation} className="w-10 h-10 bg-gray-700 flex justify-center items-center   rounded-full cursor-pointer hover:ease-out hover:duration-1000 hover:bg-gray-500  active:ease-out active:duration-500 active:bg-green-300 active:w-9 active:h-9">
             <li className="w-6 h-4 flex justify-center items-center">
               <Image className="" src="./weatherapp/location.svg" width={20} height={20} alt="" />
             </li>
@@ -85,7 +85,7 @@ export default function AsideLayout({ weather1, setValue, value, code, setCode, 
           {weather1?.weather &&
             <Image className=" flex  h-60 w-52 mt-52 mb-24" src={`/weatherapp/weather/${weather1.weather[0].icon}.png`} priority alt="" width={1080} height={1920} />
           }
-          <h2 className="text-white font-medium text-8xl text-center mt-4 ">{(weather1?.main?.temp - 273.15).toFixed(2)}</h2>
+          <h2 className="text-white font-medium text-8xl text-center mt-4 ">{weather1?.main?.temp.toFixed(2)}<span className='text-7xl'>{units === "metric"? "°C" : "°F"}</span></h2>
           {weather1?.weather &&
             <h2 className='text-2xl text-[#a09fb1] font-bold text-center mt-8 '>{weather1?.weather[0]?.description}</h2>}
           <h2 className='text-md text-[#818683]  text-center mt-8'>Today , {(new Date(weather1?.dt * 1000).toDateString("en-US", options))}</h2>

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import fetchDataWeather1 from '@/utils/fetchDataWeather1'
 
-export default function RightSectionLayout({weather1,value,code}) {
+export default function RightSectionLayout({weather1,value,code,units,setUnits}) {
   const [forecast, setForecast] = useState({})
   const [secondDay, setSecondDay] = useState()
   const [tomorrow,setTomorrow] = useState("")
@@ -11,12 +11,12 @@ export default function RightSectionLayout({weather1,value,code}) {
    
   
   
-  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${value},${code}&appid=739b8fb7ebe6944b38727b4fd7f46c2e`
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${value},${code}&appid=739b8fb7ebe6944b38727b4fd7f46c2e&units=${units}`
   useEffect(() => {
     fetchDataWeather1(url)
       .then((data) => setForecast(data))
 
-  }, [value,code])
+  }, [value,code,units])
    
   useEffect(()=>{
     if(forecast?.list){
@@ -33,8 +33,8 @@ export default function RightSectionLayout({weather1,value,code}) {
     <div className="w-screen lg:w-[65%] h-full bg-slate-950 flex flex-col items-center">
       <header className="w-[70%] h-16  text-white flex justify-end mt-5">
         <ul className="flex items-center justify-center gap-x-2">
-          <li className="text-black text-xl font-medium rounded-full bg-white w-10 h-10 flex items-center justify-center cursor-pointer">°C</li>
-          <li className="text-white text-xl font-medium rounded-full bg-gray-500 w-10 h-10 flex items-center justify-center cursor-pointer">°F</li>
+          <li onClick={()=>setUnits("metric")} className={` text-xl font-medium rounded-full  w-10 h-10 flex items-center justify-center cursor-pointer ${units === "metric"? "bg-white  text-black" : "bg-gray-500  text-white"}`}>°C</li>
+          <li onClick={()=>setUnits("imperial")} className={` text-xl font-medium rounded-full  w-10 h-10 flex items-center justify-center cursor-pointer ${units === "imperial"? "bg-white text-black" : "bg-gray-500 text-white"}`}>°F</li>
         </ul>
       </header>
       <div className="w-4/5 md:w-1/2 h-4/5 gap-y-4 lg:gap-y-0 flex-wrap lg:flex-nowrap lg:w-[70%] lg:h-1/5  text-white flex justify-center gap-x-4 mt-4 ">
@@ -43,7 +43,7 @@ export default function RightSectionLayout({weather1,value,code}) {
           {forecast?.list &&
             <>
               <Image className="h-16 w-20 pe-4" src={`/weatherapp/weather/${forecast?.list[0]?.weather[0]?.icon}.png`} alt="" width={1080} height={1920} />
-              <h2 className="text-sm text-white mt-4">{(forecast?.list[0]?.main?.temp_max - 273.15).toFixed(2) + "°C"} <span className="opacity-50">{(forecast?.list[0]?.main?.temp_min - 273.15).toFixed(2) + "°C"} </span></h2>
+              <h2 className="text-sm text-white mt-4  ">{forecast?.list[0]?.main?.temp_max.toFixed(2) + (units === "metric"? "°C" : "°F")} <span className="opacity-50">{forecast?.list[0]?.main?.temp_min.toFixed(2) + (units === "metric"? "°C" : "°F")} </span></h2>
             </>
           }
         </article>
@@ -55,7 +55,7 @@ export default function RightSectionLayout({weather1,value,code}) {
           
             
               <Image className="h-16 w-20 pe-4" src={`/weatherapp/weather/${forecast?.list[9]?.weather[0]?.icon}.png`} alt="" width={1080} height={1920} />
-              <h2 className="text-sm text-white mt-4">{(forecast?.list[9]?.main?.temp_max - 273.15).toFixed(2) + "°C"} <span className="opacity-50">{(forecast?.list[9]?.main?.temp_min - 273.15).toFixed(2) + "°C"} </span></h2>
+              <h2 className="text-sm text-white mt-4">{forecast?.list[9]?.main?.temp_max.toFixed(2) + (units === "metric"? "°C" : "°F")} <span className="opacity-50">{forecast?.list[9]?.main?.temp_min.toFixed(2) + (units === "metric"? "°C" : "°F")} </span></h2>
             </>
           }
         </article>
@@ -64,7 +64,7 @@ export default function RightSectionLayout({weather1,value,code}) {
             <>
           <h2 className="text-md text-center mb-2">{(new Date(forecast?.list[17].dt_txt).toLocaleDateString("en-US", options))}</h2>
               <Image className="h-16 w-20 pe-4" src={`/weatherapp/weather/${forecast?.list[17]?.weather[0]?.icon}.png`} alt="" width={1080} height={1920} />
-              <h2 className="text-sm text-white mt-4">{(forecast?.list[17]?.main?.temp_max - 273.15).toFixed(2) + "°C"} <span className="opacity-50">{(forecast?.list[17]?.main?.temp_min - 273.15).toFixed(2) + "°C"} </span></h2>
+              <h2 className="text-sm text-white mt-4">{forecast?.list[17]?.main?.temp_max.toFixed(2) + (units === "metric"? "°C" : "°F")} <span className="opacity-50">{forecast?.list[17]?.main?.temp_min.toFixed(2) + (units === "metric"? "°C" : "°F")} </span></h2>
             </>
           }
         </article>
@@ -74,7 +74,7 @@ export default function RightSectionLayout({weather1,value,code}) {
           <h2 className="text-md text-center mb-2">{(new Date(forecast?.list[25].dt_txt).toLocaleDateString("en-US", options))}</h2>
           
               <Image className="h-16 w-20 pe-4" src={`/weatherapp/weather/${forecast?.list[25]?.weather[0]?.icon}.png`} alt="" width={1080} height={1920} />
-              <h2 className="text-sm text-white mt-4">{(forecast?.list[25]?.main?.temp_max - 273.15).toFixed(2) + "°C"} <span className="opacity-50">{(forecast?.list[25]?.main?.temp_min - 273.15).toFixed(2) + "°C"} </span></h2>
+              <h2 className="text-sm text-white mt-4">{forecast?.list[25]?.main?.temp_max.toFixed(2) + (units === "metric"? "°C" : "°F")} <span className="opacity-50">{forecast?.list[25]?.main?.temp_min.toFixed(2) + (units === "metric"? "°C" : "°F")} </span></h2>
             </>
           }
         </article>
@@ -84,7 +84,7 @@ export default function RightSectionLayout({weather1,value,code}) {
           <h2 className="text-md text-center mb-2">{(new Date(forecast?.list[33].dt_txt).toLocaleDateString("en-US", options))}</h2>
           
               <Image className="h-16 w-20 pe-4" src={`/weatherapp/weather/${forecast?.list[33]?.weather[0]?.icon}.png`} alt="" width={1080} height={1920} />
-              <h2 className="text-sm text-white mt-4">{(forecast?.list[33]?.main?.temp_max - 273.15).toFixed(2) + "°C"} <span className="opacity-50">{(forecast?.list[33]?.main?.temp_min - 273.15).toFixed(2) + "°C"} </span></h2>
+              <h2 className="text-sm text-white mt-4">{forecast?.list[33]?.main?.temp_max.toFixed(2) + (units === "metric"? "°C" : "°F")} <span className="opacity-50">{forecast?.list[33]?.main?.temp_min.toFixed(2) + (units === "metric"? "°C" : "°F")} </span></h2>
             </>
           }
         </article>
@@ -97,11 +97,11 @@ export default function RightSectionLayout({weather1,value,code}) {
         <article className=" bg-[#1e213a] topSquareLeft flex flex-col items-center">
           <h2 className='mt-2 text-white font-medium'>Wind Status</h2>
           {weather1?.wind &&
-            <h2 className='mt-10 text-white font-medium text-4xl lg:text-6xl flex items-center'>{weather1?.wind?.speed}<span className='text-white font-medium text-3xl'>ms</span></h2>}
+            <h2 className='mt-10 text-white font-medium text-4xl lg:text-6xl flex items-center'>{weather1?.wind?.speed}<span className='text-white font-medium text-3xl ps-2'>{units === "metric"? "ms" : "mph"}</span></h2>}
           <div className='flex justify-center items-center mt-10 gap-x-4'>
             {weather1?.wind &&
               <img className='bg-gray-500 rounded-full w-8 h-8 p-1' style={{ rotate: `${weather1?.wind?.deg}deg` }} src="/weatherapp/navigation.svg" alt="" />}
-            <h2 className='text-white font-bold text-2xl'>S</h2>
+            <h2 className='text-white font-bold text-2xl ps-1'>S</h2>
           </div>
         </article>
 
@@ -109,7 +109,7 @@ export default function RightSectionLayout({weather1,value,code}) {
 
           <h2 className='mt-2 text-white font-medium'>Humidity</h2>
           {weather1?.main &&
-            <h2 className='mt-10 text-white font-medium text-4xl lg:text-6xl flex items-center'>{weather1?.main?.humidity}<span className='text-white font-medium text-3xl'>%</span></h2>}
+            <h2 className='mt-10 text-white font-medium text-4xl lg:text-6xl flex items-center'>{weather1?.main?.humidity}<span className='text-white font-medium text-3xl ps-2'>%</span></h2>}
 
           <div className='flex gap-x-8 lg:gap-x-20  text-gray-500 font-medium'>
             <h2>0</h2>
@@ -126,11 +126,11 @@ export default function RightSectionLayout({weather1,value,code}) {
 
         <article className=" bg-[#1e213a] bottomSquareLeft flex flex-col items-center">
           <h2 className='font-medium text-white mt-2 text-center'>Visibility</h2>
-          <h2 className='mt-6 text-white font-medium text-4xl lg:text-6xl flex items-center'>{(weather1?.visibility + "km").toLocaleString()}</h2>
+          <h2 className='mt-6 text-white font-medium text-4xl lg:text-6xl flex items-center gap-x-2'>{units === "metric"?weather1?.visibility?.toLocaleString("de-DE"): ((weather1?.visibility?.toLocaleString("de-DE")) * 0.62137).toFixed(2)}<span className='text-3xl'>{units === "metric"? "km" : "miles"}</span></h2>
         </article>
         <article className=" bg-[#1e213a] bottomSquareRight flex flex-col items-center">
           <h2 className='font-medium text-white mt-2 text-center'>Air Pressure</h2>
-          <h2 className='mt-6 text-white font-medium text-4xl lg:text-6xl flex items-center '>{(weather1?.main?.pressure + "mb")}</h2>
+          <h2 className='mt-6 text-white font-medium text-4xl lg:text-6xl flex items-center gap-x-2'>{weather1?.main?.pressure}<span className='text-3xl'>mb</span></h2>
         </article>
         </div>
       </section>
